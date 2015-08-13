@@ -32,7 +32,8 @@ let DataSet = React.createClass({
 			 values,
 			 label,
 			 onMouseEnter,
-			 onMouseLeave} = this.props;
+			 onMouseLeave,
+		 	 onClick} = this.props;
 
 		let lines = data.map((stack, index) => {
 			return (
@@ -47,6 +48,7 @@ let DataSet = React.createClass({
 				data={values(stack)}
 				onMouseEnter={onMouseEnter}
 				onMouseLeave={onMouseLeave}
+				onClick={onClick}
 				style={{clipPath: 'url(#lineClip)'}}
 					/>
 			);
@@ -63,7 +65,7 @@ let DataSet = React.createClass({
 				{lines}
 				<rect width={width} height={height} fill={'none'} stroke={'none'} style={{pointerEvents: 'all'}}
 			onMouseMove={ evt => { onMouseEnter(evt, data); } }
-			onMouseLeave={  evt => { onMouseLeave(evt); } }
+			onMouseLeave={ evt => { onMouseLeave(evt); } }
 				/>
 			</g>
 		);
@@ -185,7 +187,7 @@ let LineChart = React.createClass({
 			 strokeDasharray,
 	 */
 	render() {
-		let {height,
+		let { height,
 			 width,
 			 margin,
 			 colorScale,
@@ -199,7 +201,8 @@ let LineChart = React.createClass({
 			 xAxis,
 			 yAxis,
 			 shape,
-			 shapeColor} = this.props;
+			 shapeColor,
+		 	 onClick } = this.props;
 
 		let [data,
 			 innerWidth,
@@ -235,6 +238,7 @@ let LineChart = React.createClass({
 			fill={symbolColor}
 			onMouseEnter={evt => { this.onMouseEnter(evt, data); }}
 			onMouseLeave={evt => { this.onMouseLeave(evt); }}
+			onClick={evt => { onClick( evt, this._tooltipData.value) } }
 				/>;
 		}
 
@@ -252,6 +256,7 @@ let LineChart = React.createClass({
 			label={label}
 			onMouseEnter={this.onMouseEnter}
 			onMouseLeave={this.onMouseLeave}
+			onClick={onClick}
 			{...stroke}
 				/>
 
