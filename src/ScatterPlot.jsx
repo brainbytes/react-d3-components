@@ -20,7 +20,8 @@ let DataSet = React.createClass({
 		yScale: React.PropTypes.func.isRequired,
 		colorScale: React.PropTypes.func.isRequired,
 		onMouseEnter: React.PropTypes.func,
-		onMouseLeave: React.PropTypes.func
+		onMouseLeave: React.PropTypes.func,
+		onClick: React.PropTypes.func
 	},
 
 	render() {
@@ -34,7 +35,8 @@ let DataSet = React.createClass({
 			 x,
 			 y,
 			 onMouseEnter,
-			 onMouseLeave} = this.props;
+			 onMouseLeave,
+		 	 onClick} = this.props;
 
 		let circles = data.map(stack => {
 			return values(stack).map((e, index) => {
@@ -48,6 +50,7 @@ let DataSet = React.createClass({
 					fill={colorScale(label(stack))}
 					onMouseOver={ evt => { onMouseEnter(evt, e); } }
 					onMouseLeave={  evt => { onMouseLeave(evt); } }
+					onClick={ evt => { onClick(evt, e); } }
 						/>
 				);
 			});
@@ -97,7 +100,8 @@ let ScatterPlot = React.createClass({
 			 x,
 			 y,
 			 xAxis,
-			 yAxis} = this.props;
+			 yAxis,
+		 	 onClick } = this.props;
 
 		let [data,
 			 innerWidth,
@@ -154,6 +158,7 @@ let ScatterPlot = React.createClass({
 			y={y}
 			onMouseEnter={this.onMouseEnter}
 			onMouseLeave={this.onMouseLeave}
+			onClick={onClick}
 				/>
 				</Chart>
 
