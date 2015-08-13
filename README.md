@@ -443,5 +443,3 @@ React.render(<PieChart
 
 ## Credits
 This library uses parts of [D3.js](https://github.com/mbostock/d3).
-
-Test
