@@ -24,6 +24,7 @@ let DataSet = React.createClass({
 	},
 
 	render() {
+
 		let {data,
 			 area,
 			 line,
@@ -32,7 +33,8 @@ let DataSet = React.createClass({
 			 values,
 			 label,
 			 onMouseEnter,
-			 onMouseLeave} = this.props;
+			 onMouseLeave,
+		 	 onClick } = this.props;
 
 		let areas = data.map((stack, index) => {
 			return (
@@ -44,6 +46,7 @@ let DataSet = React.createClass({
 				d={area(values(stack))}
 				onMouseEnter={onMouseEnter}
 				onMouseLeave={onMouseLeave}
+				onClick={onClick}
 				data={data}
 					/>
 			);
@@ -119,6 +122,8 @@ let AreaChart = React.createClass({
 		let yValue = y(values(d[yIndex])[xIndex]);
 		let yValueCumulative = y0(values(d[d.length - 1])[xIndex]) + y(values(d[d.length - 1])[xIndex]);
 
+		this._tooltipData = {pos: position , data: {y: yValue, ySum: yValueCumulative}};
+
 		return this.props.tooltipHtml(yValue, yValueCumulative);
 	},
 
@@ -136,7 +141,8 @@ let AreaChart = React.createClass({
 			 y,
 			 y0,
 			 xAxis,
-			 yAxis} = this.props;
+			 yAxis,
+		 	 onClick } = this.props;
 
 		let [data,
 			 innerWidth,
@@ -163,6 +169,22 @@ let AreaChart = React.createClass({
 				.y1(function(e) { return yScale(y0(e) + y(e)); })
 				.interpolate(interpolate);
 
+		let tooltipSymbol;
+		if (!this.state.tooltip.hidden) {
+			let symbol = d3.svg.symbol().type('circle');
+			let translate = this._tooltipData ? `translate(${this._tooltipData.pos[0]}, ${this._tooltipData.pos[1]})` : "";
+			tooltipSymbol = this.state.tooltip.hidden ? null :
+				<path
+			className="dot"
+			d={symbol()}
+			transform={translate}
+			style={{opacity: 0}}
+			onMouseEnter={evt => { this.onMouseEnter(evt, data); }}
+			onMouseLeave={evt => { this.onMouseLeave(evt); }}
+			onClick={evt => { onClick( evt, this._tooltipData.data) } }
+				/>;
+		}
+
 		return (
 			<div>
 				<Chart height={height} width={width} margin={margin}>
@@ -177,6 +199,7 @@ let AreaChart = React.createClass({
 			values={values}
 			onMouseEnter={this.onMouseEnter}
 			onMouseLeave={this.onMouseLeave}
+			onClick={onClick}
 				/>
 
 				<Axis
@@ -196,6 +219,9 @@ let AreaChart = React.createClass({
 			width={innerWidth}
 			{...yAxis}
 				/>
+
+				{tooltipSymbol}
+
 				</Chart>
 
 				<Tooltip
