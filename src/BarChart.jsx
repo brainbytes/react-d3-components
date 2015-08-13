@@ -38,7 +38,8 @@ let DataSet = React.createClass({
 			 y,
 			 y0,
 			 onMouseEnter,
-			 onMouseLeave} = this.props;
+			 onMouseLeave,
+		 	 onClick } = this.props;
 
 		let bars = data.map(stack => {
 			return values(stack).map((e, index) => {
@@ -53,6 +54,7 @@ let DataSet = React.createClass({
 					data={e}
 					onMouseEnter={onMouseEnter}
 					onMouseLeave={onMouseLeave}
+					onClick={onClick}
 						/>
 				);
 			});
@@ -92,7 +94,8 @@ let BarChart = React.createClass({
 			 y0,
 			 x,
 			 xAxis,
-			 yAxis} = this.props;
+			 yAxis,
+		 	 onClick} = this.props;
 
 		let [data,
 			 innerWidth,
@@ -119,6 +122,7 @@ let BarChart = React.createClass({
 			x={x}
 			onMouseEnter={this.onMouseEnter}
 			onMouseLeave={this.onMouseLeave}
+			onClick={onClick}
 				/>
 
 				<Axis
