@@ -16,7 +16,7 @@ let Wedge = React.createClass({
 	},
 
 	render() {
-		let {fill, d, data, onMouseEnter, onMouseLeave} = this.props;
+		let {fill, d, data, onMouseEnter, onMouseLeave, onClick} = this.props;
 
 		return (
 				<path
@@ -24,6 +24,7 @@ let Wedge = React.createClass({
 			d={d}
 			onMouseMove={ evt => { onMouseEnter(evt, data); } }
 			onMouseLeave={  evt => { onMouseLeave(evt); } }
+			onClick={ evt => { onClick(evt, data); } }
 				/>
 		);
 	}
@@ -65,7 +66,8 @@ let DataSet = React.createClass({
 			 x,
 			 y,
 			 onMouseEnter,
-			 onMouseLeave} = this.props;
+			 onMouseLeave,
+			 onClick } = this.props;
 
 		let wedges = pie.map((e, index) => {
 			function midAngle(d){
@@ -90,7 +92,7 @@ let DataSet = React.createClass({
 				d={d}
 				onMouseEnter={onMouseEnter}
 				onMouseLeave={onMouseLeave}
-					/>
+				onClick={onClick}	/>
 
 					<polyline
 				opacity={opacity}
@@ -161,7 +163,8 @@ let PieChart = React.createClass({
 			 sort,
 			 x,
 			 y,
-			 values} = this.props;
+			 values,
+		 	 onClick} = this.props;
 
 		let [innerWidth,
 			 innerHeight] = [this._innerWidth,
@@ -216,6 +219,7 @@ let PieChart = React.createClass({
 			y={y}
 			onMouseEnter={this.onMouseEnter}
 			onMouseLeave={this.onMouseLeave}
+			onClick={onClick}
 				/>
 				</g>
 				</Chart>
